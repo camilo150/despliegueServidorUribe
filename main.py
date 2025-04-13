@@ -1,29 +1,29 @@
 import os
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
-from starlette.middleware.cors import CORSMiddleware
 from app.api.models.tablas import Base
-from app.api.endpoints.endpoints import rutas
 from app.database.connection import engine
+from app.api.endpoints import seresvivos
 
+
+# Crear tablas
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 @app.get("/")
-def main():
-    return RedirectResponse(url="/docs")
+def root():
+    return RedirectResponse("/docs")
 
-app.include_router(rutas)
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+# Incluir rutas
+app.include_router(seresvivos.router)

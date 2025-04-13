@@ -1,31 +1,24 @@
 from pydantic import BaseModel
-from datetime import date
+from typing import Optional
 
-class ProveedorDTO(BaseModel):
-    nombres: str
-    documento: str
-    direccion: str
-    ciudad: str
-    representante: str
-    telefonoContacto: str
-    correo: str
-    fechaDeEnvio: date
-    costoDeEnvio: int
-    descripcion: str
+class DominioDTO(BaseModel):
+    idDominio: int
+    nombreDominio: str
     class Config:
         orm_mode = True
 
-class ProvedorDTOEnvio(ProveedorDTO):
-    id: int
-
-class LogisticaDTO(BaseModel):
-    nombreEncargado: str
-    correoEncargado: str
-    contactoEncargado: str
-    fechaEnvio: date
-    descripcion: str
+class ReinoDTO(BaseModel):
+    idReino: int
+    nombreReino: str
+    idDominio: int
     class Config:
         orm_mode = True
 
-class LogisticaDTOEnvio(LogisticaDTO):
-    id: int
+class SerVivoDTO(BaseModel):
+    idSerVivo: int
+    nombreSerVivo: str
+    tipo: Optional[str]
+    descripcion:str
+    idReino: int
+    class Config:
+        orm_mode = True

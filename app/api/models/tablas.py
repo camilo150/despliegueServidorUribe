@@ -1,29 +1,27 @@
-from sqlalchemy import Column, String, Integer, Date
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
 
-class Proveedor(Base):
-    __tablename__ = 'proveedores'
+class Dominio(Base):
+    __tablename__ = 'Dominio'
+    idDominio = Column(Integer, primary_key=True)
+    nombreDominio = Column(String(100), nullable=False)
+    reinos = relationship("Reino", back_populates="dominio")
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    nombres = Column(String(50))
-    documento = Column(String(50))
-    direccion = Column(String(50))
-    ciudad = Column(String(50))
-    representante = Column(String(50))
-    telefonoContacto = Column(String(50))
-    correo = Column(String(50))
-    fechaDeEnvio = Column(Date)
-    costoDeEnvio = Column(Integer)
-    descripcion = Column(String(50))
+class Reino(Base):
+    __tablename__ = 'Reino'
+    idReino = Column(Integer, primary_key=True)
+    nombreReino = Column(String(100), nullable=False)
+    idDominio = Column(Integer, ForeignKey('Dominio.idDominio'))
+    dominio = relationship("Dominio", back_populates="reinos")
+    seres_vivos = relationship("SerVivo", back_populates="reino")
 
-class Logistica(Base):
-    __tablename__ = 'logistica'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    nombreEncargado = Column(String(50))
-    correoEncargado = Column(String(50))
-    contactoEncargado = Column(String(50))
-    fechaEnvio = Column(Date)
-    descripcion = Column(String(50))
+class SerVivo(Base):
+    __tablename__ = 'SeresVivos'
+    idSerVivo = Column(Integer, primary_key=True)
+    nombreSerVivo = Column(String(100), nullable=False)
+    tipo = Column(String(100))
+    descripcion =Column(String(300))
+    idReino = Column(Integer, ForeignKey('Reino.idReino'))
+    reino = relationship("Reino", back_populates="seres_vivos")
