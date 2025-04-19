@@ -1,0 +1,14 @@
+# Entorno virtual
+venv/
+env/
+modules/
+Lib/
+Include/
+Scripts/
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Archivos de configuración sensibles
+.env
